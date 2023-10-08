@@ -1,0 +1,16 @@
+# Ignore Python virtual environments
+venv/
+__pycache__/
+
+# Ignore database files
+*.db
+
+# Ignore Alembic migration files
+alembic/versions/
+
+# Ignore Node.js related files
+node_modules/
+
+# Ignore Vue.js build artifacts
+dist/
+.cache/
