@@ -38,6 +38,17 @@ class GetItemsResponse(BaseModel):
 class CreateCollectionResponse(BaseModel):
     message: str
     collection_id: int
+class UpdateCollectionResponse(CreateCollectionResponse):
+    pass
+
+class DeleteItemResponse(BaseModel):
+    message: str
+    item_id: int
+
+
+class DeleteCollectionResponse(BaseModel):
+    message: str
+    collection_id: int
 
 
 class Collection(BaseModel, Base64PhotosMixin):

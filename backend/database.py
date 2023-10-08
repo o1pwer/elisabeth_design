@@ -29,6 +29,7 @@ def construct_sqlalchemy_url() -> URL:
         port=DB_PORT
     )
 
+
 engine = create_async_engine(
     construct_sqlalchemy_url(),
     query_cache_size=1200,
@@ -39,5 +40,6 @@ engine = create_async_engine(
 )
 database_session_pool = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
 
-def get_db(model = DatabaseModel):
+
+def get_db(model=DatabaseModel):
     return DatabaseContext(database_session_pool, query_model=model)

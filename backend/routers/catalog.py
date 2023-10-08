@@ -9,7 +9,8 @@ from database import get_db
 from exceptions.validation import InvalidBase64StringError
 from models import Item, Collection
 from models.item import Image
-from schemas.item import Collection as CollectionSchema, UpdateItemResponse, UpdateItem, UpdateCollection
+from schemas.item import Collection as CollectionSchema, UpdateItemResponse, UpdateItem, UpdateCollection, \
+    DeleteItemResponse, UpdateCollectionResponse, DeleteCollectionResponse
 from schemas.item import CreateItemResponse, GetItemsResponse, CreateCollectionResponse
 from schemas.item import Item as ItemSchema
 
@@ -108,7 +109,7 @@ async def update_clothes(item_id: int, item: UpdateItem):
     )
 
 
-@catalog_router.put("/collections/update/{collection_id}", response_model=CreateCollectionResponse)
+@catalog_router.put("/collections/update/{collection_id}", response_model=UpdateCollectionResponse)
 async def update_collection(collection_id: int, collection: UpdateCollection):
     if not (fields := collection.model_dump(exclude={'replace_images', 'photos'}, exclude_none=True)):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Provide at least one field to update.")
@@ -130,3 +131,31 @@ async def update_collection(collection_id: int, collection: UpdateCollection):
         content={'message': 'Collection successfully updated.', 'collection_id': collection_id},
         status_code=status.HTTP_200_OK,
     )
+
+
+@catalog_router.delete("/list/delete/{item_id}", response_model=DeleteItemResponse)
+async def delete_clothes(item_id: int):
+    item_db = get_db(Item)
+    image_db = get_db(Image)
+    if await item_db.exists(Item.id == item_id):
+        await item_db.delete(Item.id == item_id)
+        await image_db.delete(Image.item_id == item_id)
+        return JSONResponse(
+            content={'message': 'Item successfully deleted', 'item_id': item_id},
+            status_code=status.HTTP_200_OK,
+        )
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item was not found.")
+
+
+@catalog_router.put("/collections/update/{collection_id}", response_model=DeleteCollectionResponse)
+async def delete_collection(collection: int):
+    collection_db = get_db(Collection)
+    image_db = get_db(Image)
+    if await collection_db.exists(Collection.id == collection):
+        await collection_db.delete(Collection.id == collection)
+        await image_db.delete(Image.collection_id == collection)
+        return JSONResponse(
+            content={'message': 'Collection successfully deleted', 'collection_id': collection},
+            status_code=status.HTTP_200_OK,
+        )
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Collection was not found.")
