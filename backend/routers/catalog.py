@@ -148,14 +148,14 @@ async def delete_clothes(item_id: int):
 
 
 @catalog_router.put("/collections/update/{collection_id}", response_model=DeleteCollectionResponse)
-async def delete_collection(collection: int):
+async def delete_collection(collection_id: int):
     collection_db = get_db(Collection)
     image_db = get_db(Image)
-    if await collection_db.exists(Collection.id == collection):
-        await collection_db.delete(Collection.id == collection)
-        await image_db.delete(Image.collection_id == collection)
+    if await collection_db.exists(Collection.id == collection_id):
+        await collection_db.delete(Collection.id == collection_id)
+        await image_db.delete(Image.collection_id == collection_id)
         return JSONResponse(
-            content={'message': 'Collection successfully deleted', 'collection_id': collection},
+            content={'message': 'Collection successfully deleted', 'collection_id': collection_id},
             status_code=status.HTTP_200_OK,
         )
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Collection was not found.")

@@ -38,8 +38,11 @@ class GetItemsResponse(BaseModel):
 class CreateCollectionResponse(BaseModel):
     message: str
     collection_id: int
+
+
 class UpdateCollectionResponse(CreateCollectionResponse):
     pass
+
 
 class DeleteItemResponse(BaseModel):
     message: str
