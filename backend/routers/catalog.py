@@ -22,22 +22,15 @@ async def show_clothes_list(request: Request):
     item_db = get_db(Item)
     items = await item_db.get_all()
 
-    # Extract the query parameters from the request
     query_params = dict(request.query_params)
-
-    # Check if any filter parameters were provided
     if not query_params:
         return JSONResponse(
             content={'items': [item.as_dict() for item in items]},
             status_code=status.HTTP_200_OK,
         )
-
-    # Filter the items based on the provided parameters
     filtered_items = items
     for param, value in query_params.items():
         filtered_items = [item for item in filtered_items if getattr(item, param, None) == value]
-
-    # If no items match the filters, return an HTTP 404 response
     if not filtered_items:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No items match the provided filters")
 
@@ -51,6 +44,7 @@ async def show_clothes_list(request: Request):
 async def add_clothes(item: ItemSchema):
     item_db = get_db(Item)
     image_db = get_db(Image)
+
     item_object = await item_db.add(name=item.name, desc=item.desc, collection_id=item.collection_id)
     try:
         for image in item.photos:
@@ -70,6 +64,7 @@ async def add_clothes(item: ItemSchema):
 async def add_collection(collection: CollectionSchema):
     collection_db = get_db(Collection)
     image_db = get_db(Image)
+
     collection_object = await collection_db.add(name=collection.name, desc=collection.desc)
     try:
         for image in collection.photos:
@@ -89,8 +84,10 @@ async def add_collection(collection: CollectionSchema):
 async def update_clothes(item_id: int, item: UpdateItem):
     if not (fields := item.model_dump(exclude={'replace_images', 'photos'}, exclude_none=True)):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Provide at least one field to update.")
+
     item_db = get_db(Item)
     image_db = get_db(Image)
+
     await item_db.update(Item.id == item_id, **fields)
     if await image_db.exists(Image.item_id == item_id) and item.replace_images:
         await image_db.delete(Image.item_id == item_id)
@@ -113,8 +110,10 @@ async def update_clothes(item_id: int, item: UpdateItem):
 async def update_collection(collection_id: int, collection: UpdateCollection):
     if not (fields := collection.model_dump(exclude={'replace_images', 'photos'}, exclude_none=True)):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Provide at least one field to update.")
+
     collection_db = get_db(Collection)
     image_db = get_db(Image)
+
     await collection_db.update(Collection.id == collection_id, **fields)
     if await image_db.exists(Image.collection_id == collection_id) and collection.replace_images:
         await image_db.delete(Image.collection_id == collection_id)
@@ -137,6 +136,7 @@ async def update_collection(collection_id: int, collection: UpdateCollection):
 async def delete_clothes(item_id: int):
     item_db = get_db(Item)
     image_db = get_db(Image)
+
     if await item_db.exists(Item.id == item_id):
         await item_db.delete(Item.id == item_id)
         await image_db.delete(Image.item_id == item_id)
@@ -151,6 +151,7 @@ async def delete_clothes(item_id: int):
 async def delete_collection(collection_id: int):
     collection_db = get_db(Collection)
     image_db = get_db(Image)
+
     if await collection_db.exists(Collection.id == collection_id):
         await collection_db.delete(Collection.id == collection_id)
         await image_db.delete(Image.collection_id == collection_id)
