@@ -6,10 +6,12 @@ from fastapi import FastAPI
 
 from database import engine
 from models import DatabaseModel
+from routers.api import api_router
 from routers.catalog import catalog_router
+from routers.user import user_router
 
 app = FastAPI()
-app.include_router(catalog_router, prefix="/api/v1")
+app.include_router(api_router, prefix='/api/v1')
 logger = logging.getLogger(__name__)
 
 
