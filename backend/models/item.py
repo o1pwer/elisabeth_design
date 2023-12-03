@@ -22,6 +22,6 @@ class Collection(DatabaseModel):
 
 class Image(DatabaseModel):
     id = Column(BIGINT, nullable=False, autoincrement=True, primary_key=True)
-    content = Column(LargeBinary, nullable=False)
+    link = Column(VARCHAR(200), nullable=False)
     collection_id = Column(ForeignKey("collections.id", ondelete="CASCADE"))
     item_id = Column(ForeignKey("items.id", ondelete="CASCADE"))

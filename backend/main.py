@@ -7,8 +7,6 @@ from fastapi import FastAPI
 from database import engine
 from models import DatabaseModel
 from routers.api import api_router
-from routers.catalog import catalog_router
-from routers.user import user_router
 
 app = FastAPI()
 app.include_router(api_router, prefix='/api/v1')
@@ -26,6 +24,6 @@ async def main():
 if __name__ == '__main__':
     try:
         asyncio.run(main())
-        uvicorn.run("main:app", port=8888, log_level="info", reload=True)
+        uvicorn.run("main:app", port=8000, log_level="info", reload=True)
     except (KeyboardInterrupt, SystemExit):
         logger.error("App stopped!")
