@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 async def main():
     try:
         async with engine.begin() as conn:
-            await conn.run_sync(DatabaseModel.metadata.create_all) # maybe this is not needed if I use alembic?
+            await conn.run_sync(DatabaseModel.metadata.create_all)  # maybe this is not needed if I use alembic?
     finally:
         await engine.dispose()
 

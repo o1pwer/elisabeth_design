@@ -24,5 +24,6 @@ def generate_env_file():
 
     print('.env file generated successfully.')
 
+
 if __name__ == '__main__':
     generate_env_file()

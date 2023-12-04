@@ -1,4 +1,4 @@
-from sqlalchemy import Column, text, TIMESTAMP, Boolean, String, Integer, VARCHAR
+from sqlalchemy import Column, text, TIMESTAMP, Integer, VARCHAR
 
 from models import DatabaseModel
 

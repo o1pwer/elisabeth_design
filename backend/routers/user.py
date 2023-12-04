@@ -3,7 +3,6 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi import status
-from fastapi.security import OAuth2PasswordRequestForm
 from starlette.responses import JSONResponse
 
 from database import get_db
@@ -50,6 +49,7 @@ async def register_user(
         content={'message': 'User successfully registered', 'user_id': user_object.id},
         status_code=status.HTTP_200_OK,
     )
+
 
 @user_router.get("/users/me/", response_model=User)
 async def read_users_me(

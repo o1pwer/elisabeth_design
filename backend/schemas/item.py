@@ -2,10 +2,6 @@ from fastapi import Query
 from pydantic import BaseModel
 
 
-
-
-
-
 class CreateItemResponse(BaseModel):
     message: str
     item_id: int

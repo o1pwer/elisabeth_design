@@ -6,7 +6,6 @@ from typing import Optional, Type, cast, Any, Dict, Pattern, Final
 
 from pydantic import BaseModel
 from sqlalchemy import inspect, Column, TIMESTAMP, func
-from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import registry, has_inherited_table, declared_attr
 from sqlalchemy.orm.decl_api import DeclarativeMeta
 
