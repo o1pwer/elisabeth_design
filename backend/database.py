@@ -5,7 +5,7 @@ from sqlalchemy.engine import URL
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 
-from models import DatabaseModel
+from models.base import DatabaseModel
 from models.functions.wrapper import DatabaseContext
 
 load_dotenv()

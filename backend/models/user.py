@@ -1,6 +1,6 @@
 from sqlalchemy import Column, text, TIMESTAMP, Integer, VARCHAR
 
-from models import DatabaseModel
+from models.base import DatabaseModel
 
 
 class User(DatabaseModel):

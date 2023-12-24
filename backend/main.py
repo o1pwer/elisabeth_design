@@ -5,7 +5,7 @@ import uvicorn as uvicorn
 from fastapi import FastAPI
 
 from database import engine
-from models import DatabaseModel
+from models.base import DatabaseModel
 from routers.api import api_router
 
 app = FastAPI()

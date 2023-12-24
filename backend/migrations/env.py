@@ -7,7 +7,7 @@ from sqlalchemy.engine import Connection
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 from database import construct_sqlalchemy_url, engine
-from models import DatabaseModel
+from models.base import DatabaseModel
 
 config = context.config
 

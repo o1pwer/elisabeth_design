@@ -4,11 +4,11 @@ from fastapi.requests import Request
 from fastapi.responses import JSONResponse
 
 from database import get_db
-from models import Item, Collection
+from models import Item, ClothesSet
 from models.item import Image
-from schemas.item import Collection as CollectionSchema, UpdateItemResponse, UpdateItem, UpdateCollection, \
-    DeleteItemResponse, UpdateCollectionResponse, DeleteCollectionResponse
-from schemas.item import CreateItemResponse, GetItemsResponse, CreateCollectionResponse
+from schemas.item import ClothesSet as CollectionSchema, UpdateItemResponse, UpdateItem, UpdateClothesSet, \
+    DeleteItemResponse, UpdateClothesSetResponse, DeleteClothesSetResponse
+from schemas.item import CreateItemResponse, GetItemsResponse, CreateClothesSetResponse
 from schemas.item import Item as ItemSchema
 
 catalog_router = APIRouter(prefix='/clothes')
@@ -44,7 +44,8 @@ async def show_clothes_list(request: Request):
 async def add_clothes(item: ItemSchema):
     item_db = get_db(Item)
     image_db = get_db(Image)
-    item_object = await item_db.add(name=item.name, desc=item.desc, collection_id=item.collection_id)
+
+    item_object = await item_db.add(name=item.name, desc=item.desc, clothes_set_id=item.clothes_set_id)
     for image_link in item.photos:
         await image_db.add(link=image_link)
     return JSONResponse(
@@ -53,16 +54,16 @@ async def add_clothes(item: ItemSchema):
     )
 
 
-@catalog_router.post("/collections/add", response_model=CreateCollectionResponse)
-async def add_collection(collection: CollectionSchema):
-    collection_db = get_db(Collection)
+@catalog_router.post("/clothes_sets/add", response_model=CreateClothesSetResponse)
+async def add_clothes_set(clothes_set: CollectionSchema):
+    clothes_set_db = get_db(ClothesSet)
     image_db = get_db(Image)
 
-    collection_object = await collection_db.add(name=collection.name, desc=collection.desc)
-    for image_link in collection.photos:
+    clothes_set_object = await clothes_set_db.add(name=clothes_set.name, desc=clothes_set.desc)
+    for image_link in clothes_set.photos:
         await image_db.add(link=image_link)
     return JSONResponse(
-        content={'message': 'Collection successfully created.', 'collection_id': collection_object.id},
+        content={'message': 'Clothes set successfully created.', 'clothes_set_id': clothes_set_object.id},
         status_code=status.HTTP_201_CREATED,
     )
 
@@ -87,22 +88,22 @@ async def update_clothes(item_id: int, item: UpdateItem):
     )
 
 
-@catalog_router.put("/collections/update/{collection_id}", response_model=UpdateCollectionResponse)
-async def update_collection(collection_id: int, collection: UpdateCollection):
-    if not (fields := collection.model_dump(exclude={'replace_images', 'photos'}, exclude_none=True)):
+@catalog_router.put("/clothes_sets/update/{clothes_set_id}", response_model=UpdateClothesSetResponse)
+async def update_clothes_set(clothes_set_id: int, clothes_set: UpdateClothesSet):
+    if not (fields := clothes_set.model_dump(exclude={'replace_images', 'photos'}, exclude_none=True)):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Provide at least one field to update.")
 
-    collection_db = get_db(Collection)
+    clothes_set_db = get_db(ClothesSet)
     image_db = get_db(Image)
 
-    await collection_db.update(Collection.id == collection_id, **fields)
-    if await image_db.exists(Image.collection_id == collection_id) and collection.replace_images:
-        await image_db.delete(Image.collection_id == collection_id)
-    if collection.photos:
-        for image_link in collection.photos:
-            await image_db.add(content=image_link, collection_id=collection_id)
+    await clothes_set_db.update(ClothesSet.id == clothes_set_id, **fields)
+    if await image_db.exists(Image.clothes_set_id == clothes_set_id) and clothes_set.replace_images:
+        await image_db.delete(Image.clothes_set_id == clothes_set_id)
+    if clothes_set.photos:
+        for image_link in clothes_set.photos:
+            await image_db.add(link=image_link, clothes_set_id=clothes_set_id)
     return JSONResponse(
-        content={'message': 'Collection successfully updated.', 'collection_id': collection_id},
+        content={'message': 'Clothes set successfully updated.', 'clothes_set_id': clothes_set_id},
         status_code=status.HTTP_200_OK,
     )
 
@@ -122,16 +123,16 @@ async def delete_clothes(item_id: int):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item was not found.")
 
 
-@catalog_router.put("/collections/update/{collection_id}", response_model=DeleteCollectionResponse)
-async def delete_collection(collection_id: int):
-    collection_db = get_db(Collection)
+@catalog_router.delete("/clothes_sets/update/{clothes_set_id}", response_model=DeleteClothesSetResponse)
+async def delete_clothes_set(clothes_set_id: int):
+    clothes_set_db = get_db(ClothesSet)
     image_db = get_db(Image)
 
-    if await collection_db.exists(Collection.id == collection_id):
-        await collection_db.delete(Collection.id == collection_id)
-        await image_db.delete(Image.collection_id == collection_id)
+    if await clothes_set_db.exists(ClothesSet.id == clothes_set_id):
+        await clothes_set_db.delete(ClothesSet.id == clothes_set_id)
+        await image_db.delete(Image.clothes_set_id == clothes_set_id)
         return JSONResponse(
-            content={'message': 'Collection successfully deleted', 'collection_id': collection_id},
+            content={'message': 'Clothes set successfully deleted', 'clothes_set_id': clothes_set_id},
             status_code=status.HTTP_200_OK,
         )
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Collection was not found.")
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Clothes set was not found.")

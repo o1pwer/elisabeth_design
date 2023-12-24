@@ -15,12 +15,12 @@ class GetItemsResponse(BaseModel):
     items: list[dict] | None
 
 
-class CreateCollectionResponse(BaseModel):
+class CreateClothesSetResponse(BaseModel):
     message: str
-    collection_id: int
+    clothes_set_id: int
 
 
-class UpdateCollectionResponse(CreateCollectionResponse):
+class UpdateClothesSetResponse(CreateClothesSetResponse):
     pass
 
 
@@ -29,12 +29,12 @@ class DeleteItemResponse(BaseModel):
     item_id: int
 
 
-class DeleteCollectionResponse(BaseModel):
+class DeleteClothesSetResponse(BaseModel):
     message: str
-    collection_id: int
+    clothes_set_id: int
 
 
-class Collection(BaseModel):
+class ClothesSet(BaseModel):
     name: str
     desc: str
     photos: list[str] | None
@@ -43,19 +43,19 @@ class Collection(BaseModel):
 class Item(BaseModel):
     name: str
     desc: str
-    collection_id: int
+    clothes_set_id: int
     photos: list[str] | None
 
 
 class UpdateItem(BaseModel):
     name: str | None = None
     desc: str | None = None
-    collection_id: int | None = None
+    clothes_set_id: int | None = None
     photos: list[str] | None = None
     replace_images: bool = Query(False, description="Set to true to replace all images")
 
 
-class UpdateCollection(BaseModel):
+class UpdateClothesSet(BaseModel):
     name: str | None = None
     desc: str | None = None
     photos: list[str] | None = None

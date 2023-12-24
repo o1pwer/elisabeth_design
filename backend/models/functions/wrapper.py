@@ -11,7 +11,7 @@ from sqlalchemy.orm import sessionmaker, Session, joinedload
 from sqlalchemy.sql import ClauseElement
 from sqlalchemy.sql.elements import BinaryExpression
 
-from models import DatabaseModel
+from models.base import DatabaseModel
 
 ASTERISK = "*"
 
@@ -59,6 +59,7 @@ class Transaction:
         self._strategy = new_strategy
 
 
+# noinspection PyTypeChecker
 class DatabaseContext(Generic[SQLAlchemyModel]):
     def __init__(
             self,
@@ -119,18 +120,12 @@ class DatabaseContext(Generic[SQLAlchemyModel]):
             first_scalar_result = result.scalars().first()
         return first_scalar_result  # type: ignore
 
-    async def update(self, *clauses: ExpressionType, **values: Any) -> None:
+    async def update(self, *clauses: ExpressionType, **values: Any) -> int:
         async with self._transaction:
             statement = update(self.model).where(*clauses).values(**values)
-            await self._session.execute(statement)
+            result = await self._session.execute(statement)
+        return result.rowcount
 
-    async def update_with_returning(self, *clauses: ExpressionType, **values: Any) -> None:
-        """Возвращает число обновлённых строк."""
-        async with self._transaction:
-            statement = update(self.model).where(*clauses).values(**values).returning(self.model)
-            result: AsyncResult = await self._session.execute(statement)
-            first_scalar_result = result.scalars().first()
-        return first_scalar_result  # type: ignore
 
     async def exists(self, *clauses: ExpressionType) -> bool:
         async with self._transaction:
@@ -146,7 +141,7 @@ class DatabaseContext(Generic[SQLAlchemyModel]):
 
     async def count(self, *clauses: ExpressionType) -> int:
         async with self._transaction:
-            statement = select(func.count(ASTERISK)).select_from(self.model).where(*clauses)
+            statement = select(func.count(self.model)).select_from(self.model).where(*clauses)
             # noinspection PyTypeChecker
             result: AsyncResult = await self._session.execute(statement)
         return cast(int, result.scalar())
