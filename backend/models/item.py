@@ -5,6 +5,7 @@ from models.base import DatabaseModel
 
 
 class Item(DatabaseModel):
+    """SQLAlchemy model which represents Item object."""
     id = Column(BIGINT, nullable=False, autoincrement=True, primary_key=True)
     name = Column(VARCHAR(200), nullable=False)
     desc = Column(VARCHAR(200), nullable=False)
@@ -13,6 +14,7 @@ class Item(DatabaseModel):
 
 
 class ClothesSet(DatabaseModel):
+    """SQLAlchemy model which represents Clothes set object."""
     id = Column(BIGINT, nullable=False, autoincrement=True, primary_key=True)
     name = Column(VARCHAR(200), nullable=False)
     desc = Column(VARCHAR(200), nullable=False)
@@ -21,6 +23,7 @@ class ClothesSet(DatabaseModel):
 
 
 class Image(DatabaseModel):
+    """SQLAlchemy model which represents Image object."""
     id = Column(BIGINT, nullable=False, autoincrement=True, primary_key=True)
     link = Column(VARCHAR(200), nullable=False)
     clothes_set_id = Column(ForeignKey("clothes_sets.id", ondelete="CASCADE"))

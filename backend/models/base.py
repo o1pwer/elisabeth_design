@@ -11,7 +11,7 @@ from sqlalchemy.orm.decl_api import DeclarativeMeta
 
 mapper_registry = registry()
 
-# Регулярное выражение, которое разделяет строку по заглавным буквам
+# Regex which splits the string by capital letters
 TABLE_NAME_REGEX: Pattern[str] = re.compile(r"(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])")
 PLURAL: Final[str] = "s"
 
@@ -19,13 +19,14 @@ logger = logging.getLogger(__name__)
 
 
 class ImmutableProperties(BaseModel):
+    """A class containing "properties" dict, which is immutable."""
     properties: dict
 
     def __getattr__(self, name):
         try:
             return self.properties[name]
-        except KeyError:
-            raise AttributeError(name)
+        except KeyError as exc:
+            raise AttributeError(name) from exc
 
     def __setattr__(self, name, value):
         raise AttributeError("ImmutableProperties object is immutable")
@@ -35,6 +36,7 @@ class ImmutableProperties(BaseModel):
 
 
 class DatabaseModel(metaclass=DeclarativeMeta):
+    """A base class from which all custom models should inherit."""
     __abstract__ = True
     __mapper_args__ = {"eager_defaults": True}
 
@@ -49,7 +51,7 @@ class DatabaseModel(metaclass=DeclarativeMeta):
     @declared_attr
     def __tablename__(self) -> Optional[str]:
         """
-        Автоматически генерирует имя таблицы из названия модели, примеры:
+        Auto generates table name from class name.
 
         OrderItem -> order_items
         Order -> orders
@@ -80,10 +82,12 @@ class DatabaseModel(metaclass=DeclarativeMeta):
         return f"{self.__class__.__qualname__}->{primary_keys}"
 
     def as_dict(self) -> Dict[Any, Any]:
+        """Returns database object as dictionary."""
         return self._get_attributes()
 
 
 class TimedBaseModel(DatabaseModel):
+    """DatabaseModel, but with few additional fields containing dates of creation and last update of the row"""
     __abstract__ = True
 
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())

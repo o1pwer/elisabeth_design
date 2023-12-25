@@ -4,6 +4,7 @@ from models.base import DatabaseModel
 
 
 class User(DatabaseModel):
+    """SQLAlchemy model which represents User object."""
     id = Column(Integer, primary_key=True, index=True)
     username = Column(VARCHAR(60), nullable=False)
     email = Column(VARCHAR(100), unique=True, nullable=False)
