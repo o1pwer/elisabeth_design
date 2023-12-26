@@ -32,6 +32,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 20px;
+  z-index: 1;
 }
 
 .designer-info img {
