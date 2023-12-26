@@ -1,6 +1,6 @@
 <template>
   <header class="site-header">
-    <h1>Your Brand Name</h1>
+    <h1>I am a woman.</h1>
   </header>
 </template>
 

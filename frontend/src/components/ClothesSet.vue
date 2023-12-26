@@ -1,5 +1,5 @@
 <template>
-  <div class="clothes-set">
+  <div class="clothes_set">
     <!-- This slot can be used to pass custom content for each clothes set -->
     <slot></slot>
   </div>
@@ -12,7 +12,7 @@ export default {
 </script>
 
 <style scoped>
-.clothes-set {
+.clothes_set {
   /* Add your styles here */
   width: 100%;
   border: 1px solid #ddd;

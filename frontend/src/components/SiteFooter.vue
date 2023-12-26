@@ -1,7 +1,6 @@
 <template>
   <footer class="site-footer">
-    <!-- You can add your footer content here -->
-    <p>&copy; 2023 Your Brand. All rights reserved.</p>
+    <p>&copy; 2023 I am a woman. All rights reserved.</p>
   </footer>
 </template>
 
@@ -13,9 +12,12 @@ export default {
 
 <style scoped>
 .site-footer {
-  /* Add your styles here */
   text-align: center;
   padding: 20px;
   background-color: #f5f5f5;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 </style>

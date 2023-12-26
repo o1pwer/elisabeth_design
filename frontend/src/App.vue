@@ -1,8 +1,13 @@
 <template>
-  <site-header></site-header>
-  <div style="display: flex"><clothes-set></clothes-set><clothes-set></clothes-set></div>
-  <designer-info></designer-info>
-  <site-footer></site-footer>
+  <SiteContainer>
+    <SiteHeader></SiteHeader>
+    <ClothesSetContainer>
+      <ClothesSet></ClothesSet>
+      <ClothesSet></ClothesSet>
+    </ClothesSetContainer>
+    <DesignerInfo></DesignerInfo>
+    <SiteFooter></SiteFooter>
+  </SiteContainer>
 </template>
 
 <script>
@@ -11,12 +16,15 @@ import ClothesSet from "@/components/ClothesSet";
 import DesignerInfo from "@/components/DesignerInfo";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
+import SiteContainer from "@/components/SiteContainer";
+import ClothesSetContainer from "@/components/ClothesSetContainer";
+
 export default {
   name: 'App',
-  components: {SiteHeader, SiteFooter, DesignerInfo, ClothesSet},
+  components: {ClothesSetContainer, SiteContainer, SiteHeader, SiteFooter, DesignerInfo, ClothesSet},
 }
 </script>
 
 <style>
-
+@import "normalize.css";
 </style>

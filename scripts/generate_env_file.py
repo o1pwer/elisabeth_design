@@ -19,7 +19,7 @@ def generate_env_file():
         ROOT_DIR={os.path.dirname(os.path.dirname(os.path.abspath(__file__)))}
                                   """)
 
-    with open('../../.env', 'w') as env_file:
+    with open('../.env', 'w') as env_file:
         env_file.write(env_content.strip())
 
     print('.env file generated successfully.')
