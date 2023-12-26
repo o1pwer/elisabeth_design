@@ -126,7 +126,6 @@ class DatabaseContext(Generic[SQLAlchemyModel]):
             result = await self._session.execute(statement)
         return result.rowcount
 
-
     async def exists(self, *clauses: ExpressionType) -> bool:
         async with self._transaction:
             statement = exists(self.model).where(*clauses).select()
