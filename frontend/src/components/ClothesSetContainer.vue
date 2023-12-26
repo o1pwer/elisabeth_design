@@ -44,5 +44,6 @@ export default {
   flex-wrap: wrap;
   padding: 1.5rem;
   column-gap: 0.5rem;
+  justify-content: space-between;
 }
 </style>
