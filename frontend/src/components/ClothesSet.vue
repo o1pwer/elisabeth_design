@@ -16,10 +16,14 @@ export default {
   /* Add your styles here */
   max-width: 100%;
   border: 1px solid #ddd;
-  padding: 1rem;
+  padding: 0.5rem;
+  @screen md{
+    padding: 1rem;
+  }
 }
 
 .clothes_set * {
   max-width: 100%;
 }
+
 </style>
