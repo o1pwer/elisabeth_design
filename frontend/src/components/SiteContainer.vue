@@ -1,12 +1,17 @@
 <template>
   <div class="site-container">
-    <slot></slot>
+    <ClothesSetContainer>
+    </ClothesSetContainer>
+    <DesignerInfo></DesignerInfo>
   </div>
 </template>
 
 <script>
+import ClothesSetContainer from "@/components/ClothesSetContainer";
+import DesignerInfo from "@/components/DesignerInfo";
 export default {
-  name: "SiteContainer"
+  name: "SiteContainer",
+  components: {ClothesSetContainer, DesignerInfo}
 }
 </script>
 

@@ -8,6 +8,7 @@ from database import engine
 from models.base import DatabaseModel
 from routers.api import api_router
 
+
 app = FastAPI()
 app.include_router(api_router, prefix='/api/v1')
 logger = logging.getLogger(__name__)

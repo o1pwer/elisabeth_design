@@ -1,28 +1,20 @@
 <template>
-  <SiteContainer>
-    <SiteHeader></SiteHeader>
-    <ClothesSetContainer :items="getClothesSets()">
-    </ClothesSetContainer>
-    <DesignerInfo></DesignerInfo>
-  </SiteContainer>
+  <SiteHeader></SiteHeader>
+  <router-view></router-view>
   <SiteFooter></SiteFooter>
 </template>
 
 <script>
 
-import DesignerInfo from "@/components/DesignerInfo";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
-import SiteContainer from "@/components/SiteContainer";
-import ClothesSetContainer from "@/components/ClothesSetContainer";
 
 export default {
   name: 'App',
-  components: {ClothesSetContainer, SiteContainer, SiteHeader, SiteFooter, DesignerInfo},
+  components: {SiteHeader, SiteFooter},
   methods: {
-    getClothesSets() {
-      return [require('./assets/media/photo_2023-10-01_20-41-14.jpg'), require('./assets/media/photo_2023-10-08_15-44-22.jpg'),]
-    },
+  },
+  data() {
   }
 }
 </script>

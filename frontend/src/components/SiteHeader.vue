@@ -1,13 +1,18 @@
 <template>
   <header class="site-header">
     <h1>I am a woman.</h1>
-    <div class="login-btn">Login</div>
+    <div class="login-btn" @click="openLoginPage">Login</div>
   </header>
 </template>
 
 <script>
 export default {
-  name: 'SiteHeader'
+  name: 'SiteHeader',
+  methods: {
+    openLoginPage() {
+      this.$router.push('/login');
+    },
+  }
 }
 </script>
 

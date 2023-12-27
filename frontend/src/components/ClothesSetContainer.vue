@@ -14,13 +14,16 @@ export default {
     ClothesSet
   },
   props: {
-    items: Array
+    items: {
+      type: Array, default:
+          () => [require('../assets/media/photo_2023-10-01_20-41-14.jpg'), require('../assets/media/photo_2023-10-08_15-44-22.jpg'),]
+    },
   },
   data() {
     return {
       // Define the column gap here so it can be used in the computed property
-      columnGap: 10
-    };
+      columnGap: 10,
+    }
   },
   computed: {
     itemStyle() {
