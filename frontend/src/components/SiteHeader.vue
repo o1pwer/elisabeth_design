@@ -1,16 +1,19 @@
 <template>
   <header class="site-header">
-    <h1>I am a woman.</h1>
-    <div class="login-btn" @click="openLoginPage">Login</div>
+    <div class="text-logo" @click="openMainPage"><h1>I am a woman.</h1></div>
+    <LoginButton/>
   </header>
 </template>
 
 <script>
+import LoginButton from "@/components/buttons/LoginButton";
+
 export default {
   name: 'SiteHeader',
+  components: {LoginButton},
   methods: {
-    openLoginPage() {
-      this.$router.push('/login');
+    openMainPage() {
+      this.$router.push('/');
     },
   }
 }
@@ -23,10 +26,9 @@ export default {
   padding: 20px;
   background-color: #f5f5f5;
 }
-.login-btn {
-  display: block;
-  margin-left: auto;
-  align-self: center;
-  @apply font-bold hover:underline;
+.text-logo {
+  cursor: pointer;
+  padding: 1rem;
+  background-color: #ffdffd;
 }
 </style>

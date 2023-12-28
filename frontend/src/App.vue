@@ -1,7 +1,7 @@
 <template>
-  <SiteHeader></SiteHeader>
-  <router-view></router-view>
-  <SiteFooter></SiteFooter>
+  <SiteHeader/>
+  <router-view/>
+  <SiteFooter/>
 </template>
 
 <script>
@@ -20,14 +20,17 @@ export default {
 </script>
 
 <style>
-@import "normalize.css";
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "normalize.css";
 
 * {
   box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
 }
 
 #app {

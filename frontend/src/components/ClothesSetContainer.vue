@@ -16,7 +16,7 @@ export default {
   props: {
     items: {
       type: Array, default:
-          () => [require('../assets/media/photo_2023-10-01_20-41-14.jpg'), require('../assets/media/photo_2023-10-08_15-44-22.jpg'),]
+          () => [require('../assets/media/photo_2023-10-01_20-41-14.jpg'), require('../assets/media/photo_2023-10-08_15-44-22.jpg'), require('../assets/media/photo_2023-10-08_15-44-22.jpg'), require('../assets/media/photo_2023-10-08_15-44-22.jpg'),]
     },
   },
   data() {
@@ -47,6 +47,7 @@ export default {
   flex-wrap: wrap;
   padding: 1.5rem;
   column-gap: 0.5rem;
+  row-gap: 0.5rem;
   justify-content: space-between;
 }
 </style>

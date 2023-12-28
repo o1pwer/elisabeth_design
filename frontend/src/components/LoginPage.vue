@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <form @submit.prevent="onSubmit" class="login-form">
-      <h2>Login</h2>
+      <h3 class="login-header">Login</h3>
       <div class="form-group">
         <label for="username">Username:</label>
         <input type="text" id="username" v-model="loginDetails.username">
@@ -50,7 +50,9 @@ export default {
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
+.login-header {
+  margin-bottom: 0.5rem;
+}
 .form-group {
   margin-bottom: 15px;
 }
