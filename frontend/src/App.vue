@@ -20,10 +20,10 @@ export default {
 </script>
 
 <style>
+@import "normalize.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "normalize.css";
 
 * {
   box-sizing: border-box;

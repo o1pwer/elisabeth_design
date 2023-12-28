@@ -16,24 +16,41 @@ export default {
   props: {
     items: {
       type: Array, default:
-          () => [require('../assets/media/photo_2023-10-01_20-41-14.jpg'), require('../assets/media/photo_2023-10-08_15-44-22.jpg'), require('../assets/media/photo_2023-10-08_15-44-22.jpg'), require('../assets/media/photo_2023-10-08_15-44-22.jpg'),]
+          () => [require('../assets/media/photo_2023-10-01_20-41-14.jpg'), require('../assets/media/photo_2023-10-08_15-44-22.jpg')]
     },
+  },
+  methods: {
+    addToCounter() {
+      // Adds 1 to itemStyle calls counter
+      this.itemStyleCallCounter += 1;
+    },
+    clearCounter() {
+      // Clears counter
+      this.itemStyleCallCounter = 0;
+    }
   },
   data() {
     return {
-      // Define the column gap here so it can be used in the computed property
-      columnGap: 10,
+      // Define the column gap here so it can be used in the computed property (in rem)
+      columnGap: 0.5,
+      itemStyleCallCounter: 0,
     }
   },
   computed: {
     itemStyle() {
-      const itemCount = this.items.length;
+      let itemCount = this.items.length;
+      if (this.itemStyleCallCounter === 3) {
+        itemCount = 0;
+        this.clearCounter();
+      }
+      this.addToCounter();
       // Adjust the width calculation to account for the column gap
-      const baseWidth = itemCount <= 3 ? 100 / Math.min(itemCount, 3) : 33.33;
+      const singleImageWidth = 100/ Number((Math.min(itemCount, 3)).toFixed(2));
+      const baseWidth = 100 / singleImageWidth;
       const gapTotal = this.columnGap * (Math.min(itemCount, 3) - 1);
-      const width = itemCount <= 3 ? `calc(${baseWidth}% - ${gapTotal}px)` : `calc(33.33% - ${this.columnGap}px)`;
+      const width = itemCount <= 3 ? `calc(${baseWidth}% - ${gapTotal}rem)` : `calc(${singleImageWidth}% - ${this.columnGap}rem)`;
       return {
-        flex: `0 1 ${width}`
+        flex: `1 0 ${width}`
       };
     }
   }
