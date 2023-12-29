@@ -14,7 +14,7 @@ export default {
   props: {
     designer: {
       type: Object,
-      default: function () {
+      default: () => {
         return {
           name: 'Elizabeth Cold',
           photo: require('../assets/media/photo.png'),

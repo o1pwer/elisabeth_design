@@ -10,7 +10,7 @@ class Item(DatabaseModel):
     name = Column(VARCHAR(200), nullable=False)
     desc = Column(VARCHAR(200), nullable=False)
     clothes_set_id = Column(ForeignKey("clothes_sets.id", ondelete="CASCADE"))
-    images = relationship("Image", backref="item")
+    images = relationship("Image", backref="item", lazy='joined')
 
 
 class ClothesSet(DatabaseModel):
@@ -18,8 +18,8 @@ class ClothesSet(DatabaseModel):
     id = Column(BIGINT, nullable=False, autoincrement=True, primary_key=True)
     name = Column(VARCHAR(200), nullable=False)
     desc = Column(VARCHAR(200), nullable=False)
-    items = relationship("Item", backref="clothes_set")
-    images = relationship("Image", backref="clothes_set")
+    items = relationship("Item", backref="clothes_set", lazy='joined')
+    images = relationship("Image", backref="clothes_set", lazy='joined')
 
 
 class Image(DatabaseModel):

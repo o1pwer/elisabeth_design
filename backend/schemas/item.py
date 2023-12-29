@@ -46,7 +46,11 @@ class Item(BaseModel):
     clothes_set_id: int
     photos: list[str] | None
 
-
+class Image(BaseModel):
+    id: int
+    link: str
+    clothes_set_id: int
+    item_id: int
 class UpdateItem(BaseModel):
     name: str | None = None
     desc: str | None = None
@@ -60,3 +64,16 @@ class UpdateClothesSet(BaseModel):
     desc: str | None = None
     photos: list[str] | None = None
     replace_images: bool = Query(False, description="Set to true to replace all images")
+
+class ClothesSetItem(BaseModel):
+    id: int
+    name: str
+    desc: str
+    items: list[Item]
+    images: list[Image]
+
+class GetClothesSetItemsResponse(BaseModel):
+
+    clothes_sets: list[ClothesSetItem]
+    class Config:
+        from_attributes = True

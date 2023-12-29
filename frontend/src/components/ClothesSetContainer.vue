@@ -1,7 +1,7 @@
 <template>
   <div class="clothes-set-container">
     <ClothesSet v-for="(item, index) in items" :key="index" :style="itemStyle">
-      <img :src="item" alt="Clothes set image">
+<!--      <img v-if="item.images.length > 0" :src="require(`${item.images[0].link}`)" alt="Clothes set image">-->
     </ClothesSet>
   </div>
 </template>
@@ -16,7 +16,7 @@ export default {
   props: {
     items: {
       type: Array, default:
-          () => [require('../assets/media/photo_2023-10-01_20-41-14.jpg'), require('../assets/media/photo_2023-10-08_15-44-22.jpg')]
+          () => []
     },
   },
   methods: {
@@ -27,6 +27,13 @@ export default {
     clearCounter() {
       // Clears counter
       this.itemStyleCallCounter = 0;
+    },
+    getImageLink(item) {
+      if (item.images.length > 0) {
+        return require(`${item.images[0].link}`)
+      } else {
+        return false
+      }
     }
   },
   data() {

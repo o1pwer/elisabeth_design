@@ -6,7 +6,8 @@ from typing import Optional, Type, cast, Any, Dict, Pattern, Final
 
 from pydantic import BaseModel
 from sqlalchemy import inspect, Column, TIMESTAMP, func
-from sqlalchemy.orm import registry, has_inherited_table, declared_attr
+from sqlalchemy.orm import registry, has_inherited_table, declared_attr, class_mapper
+from sqlalchemy.orm.collections import InstrumentedList
 from sqlalchemy.orm.decl_api import DeclarativeMeta
 
 mapper_registry = registry()
@@ -67,7 +68,9 @@ class DatabaseModel(metaclass=DeclarativeMeta):
         return formatted_table_name[:last_underscore] + PLURAL
 
     def _get_attributes(self) -> Dict[Any, Any]:
-        return {k: v for k, v in self.__dict__.items() if not k.startswith("_")}
+        """Retrieve attribute names for this model, excluding internal attributes and relationships."""
+        columns = [column.key for column in class_mapper(self.__class__).columns]
+        return {key: getattr(self, key) for key in columns if not key.startswith("_")}
 
     def __str__(self) -> str:
         attributes = "|".join(str(v) for k, v in self._get_attributes().items())
@@ -81,10 +84,30 @@ class DatabaseModel(metaclass=DeclarativeMeta):
         )
         return f"{self.__class__.__qualname__}->{primary_keys}"
 
-    def as_dict(self) -> Dict[Any, Any]:
-        """Returns database object as dictionary."""
-        return self._get_attributes()
+    async def as_dict(self, visited=None):
+        """Returns database object as dictionary, including relationships."""
+        if visited is None:
+            visited = set()
 
+        obj_id = (self.__class__, self.id)
+        if obj_id in visited:
+            return {'id': self.id}  # or whatever minimal reference you want
+
+        visited.add(obj_id)
+        serialized_data = {}
+        for attribute in inspect(self).mapper.column_attrs:
+            serialized_data[attribute.key] = getattr(self, attribute.key)
+
+        for relationship in inspect(self).mapper.relationships:
+            value = getattr(self, relationship.key)
+            if isinstance(value, list):
+                serialized_data[relationship.key] = [await item.as_dict(visited) for item in value]
+            elif value:
+                serialized_data[relationship.key] = await value.as_dict(visited)
+            else:
+                serialized_data[relationship.key] = None
+
+        return serialized_data
 
 class TimedBaseModel(DatabaseModel):
     """DatabaseModel, but with few additional fields containing dates of creation and last update of the row"""

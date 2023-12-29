@@ -1,6 +1,6 @@
 <template>
   <div class="site-container">
-    <ClothesSetContainer>
+    <ClothesSetContainer :items="items">
     </ClothesSetContainer>
     <DesignerInfo></DesignerInfo>
   </div>
@@ -9,9 +9,20 @@
 <script>
 import ClothesSetContainer from "@/components/ClothesSetContainer";
 import DesignerInfo from "@/components/DesignerInfo";
+
 export default {
   name: "SiteContainer",
-  components: {ClothesSetContainer, DesignerInfo}
+  components: {ClothesSetContainer, DesignerInfo},
+  data() {
+    return {
+      items: Array
+    }
+  },
+  mounted() {
+    fetch("/api/v1/clothes/list/clothes_sets")
+        .then(response => response.json())
+        .then(data => (this.items = data.clothes_sets));
+  }
 }
 </script>
 

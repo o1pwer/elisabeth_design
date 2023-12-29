@@ -3,6 +3,7 @@ import logging
 
 import uvicorn as uvicorn
 from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
 
 from database import engine
 from models.base import DatabaseModel
@@ -11,6 +12,13 @@ from routers.api import api_router
 
 app = FastAPI()
 app.include_router(api_router, prefix='/api/v1')
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:8080"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 logger = logging.getLogger(__name__)
 
 

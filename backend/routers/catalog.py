@@ -7,7 +7,7 @@ from database import get_db
 from models import Item, ClothesSet
 from models.item import Image
 from schemas.item import ClothesSet as CollectionSchema, UpdateItemResponse, UpdateItem, UpdateClothesSet, \
-    DeleteItemResponse, UpdateClothesSetResponse, DeleteClothesSetResponse
+    DeleteItemResponse, UpdateClothesSetResponse, DeleteClothesSetResponse, GetClothesSetItemsResponse
 from schemas.item import CreateItemResponse, GetItemsResponse, CreateClothesSetResponse
 from schemas.item import Item as ItemSchema
 
@@ -39,7 +39,29 @@ async def show_clothes_list(request: Request):
         status_code=status.HTTP_200_OK,
     )
 
+@catalog_router.get("/list/clothes_sets", response_model=GetClothesSetItemsResponse)
+async def show_clothes_set_list(request: Request):
+    clothes_set_db = get_db(ClothesSet)
+    clothes_sets = await clothes_set_db.get_all(load=ClothesSet.images)
+    query_params = dict(request.query_params)
+    if not query_params:
+        return JSONResponse(
+            content={'clothes_sets': [await item.as_dict() for item in clothes_sets]},
+            status_code=status.HTTP_200_OK,
+        )
+    filtered_items = clothes_sets
+    for param, value in query_params.items():
+        filtered_items = [item for item in filtered_items if getattr(item, param, None) == value]
+    if not filtered_items:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No items match the provided filters"
+        )
 
+    return JSONResponse(
+        content={'clothes_sets': [item.as_dict() for item in filtered_items]},
+        status_code=status.HTTP_200_OK,
+    )
 @catalog_router.post("/list/add", response_model=CreateItemResponse)
 async def add_clothes(item: ItemSchema):
     item_db = get_db(Item)

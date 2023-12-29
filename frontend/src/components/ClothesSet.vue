@@ -7,8 +7,14 @@
 
 <script>
 export default {
-  name: 'ClothesSet'
+  name: 'ClothesSet',
+  methods: {
+    test() {
+      return require('../assets/media/photo_2023-10-08_15-44-22.jpg')
+    }
+  }
 }
+
 </script>
 
 <style scoped>

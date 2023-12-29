@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from sqlalchemy.engine import URL
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import sessionmaker
 
 from models.base import DatabaseModel
@@ -38,7 +38,7 @@ engine = create_async_engine(
     future=True,
     echo=True,
 )
-database_session_pool = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
+database_session_pool = async_sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
 
 
 def get_db(model=DatabaseModel):

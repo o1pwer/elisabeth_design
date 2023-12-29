@@ -6,8 +6,8 @@ from typing import Type, Generic, Union, TypeVar, Optional, cast, List, Any, \
 
 from sqlalchemy import delete, exists, func, select, update
 from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy.ext.asyncio import AsyncSession, AsyncResult, AsyncSessionTransaction
-from sqlalchemy.orm import sessionmaker, Session, joinedload
+from sqlalchemy.ext.asyncio import AsyncSession, AsyncResult, AsyncSessionTransaction, async_sessionmaker
+from sqlalchemy.orm import sessionmaker, Session, joinedload, lazyload
 from sqlalchemy.sql import ClauseElement
 from sqlalchemy.sql.elements import BinaryExpression
 
@@ -61,14 +61,9 @@ class Transaction:
 
 # noinspection PyTypeChecker
 class DatabaseContext(Generic[SQLAlchemyModel]):
-    def __init__(
-            self,
-            session_or_pool: Union[sessionmaker, AsyncSession],
-            *,
-            query_model: Type[SQLAlchemyModel]
-    ) -> None:
-        if isinstance(session_or_pool, sessionmaker):
-            self._session: AsyncSession = cast(AsyncSession, session_or_pool())
+    def __init__(self, session_or_pool: Union[async_sessionmaker, AsyncSession], *, query_model: Type[SQLAlchemyModel]) -> None:
+        if isinstance(session_or_pool, async_sessionmaker):
+            self._session: AsyncSession = session_or_pool()
         else:
             self._session = session_or_pool
         self.model = query_model

@@ -14,8 +14,8 @@ export default {
   components: {SiteHeader, SiteFooter},
   methods: {
   },
-  data() {
-  }
+  // data() {
+  // }
 }
 </script>
 
