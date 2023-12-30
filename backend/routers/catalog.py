@@ -46,7 +46,7 @@ async def show_clothes_set_list(request: Request):
     query_params = dict(request.query_params)
     if not query_params:
         return JSONResponse(
-            content={'clothes_sets': [await item.as_dict() for item in clothes_sets]},
+            content={'clothes_sets': [item.as_dict() for item in clothes_sets]},
             status_code=status.HTTP_200_OK,
         )
     filtered_items = clothes_sets

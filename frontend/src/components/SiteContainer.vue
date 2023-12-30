@@ -18,7 +18,7 @@ export default {
       items: [],
     }
   },
-  mounted() {
+  created() {
     fetch("/api/v1/clothes/list/clothes_sets")
         .then(response => response.json())
         .then(data => (this.items = data.clothes_sets));

@@ -7,7 +7,6 @@ from typing import Optional, Type, cast, Any, Dict, Pattern, Final
 from pydantic import BaseModel
 from sqlalchemy import inspect, Column, TIMESTAMP, func
 from sqlalchemy.orm import registry, has_inherited_table, declared_attr, class_mapper
-from sqlalchemy.orm.collections import InstrumentedList
 from sqlalchemy.orm.decl_api import DeclarativeMeta
 
 mapper_registry = registry()
@@ -84,7 +83,7 @@ class DatabaseModel(metaclass=DeclarativeMeta):
         )
         return f"{self.__class__.__qualname__}->{primary_keys}"
 
-    async def as_dict(self, visited=None):
+    def as_dict(self, visited=None):
         """Returns database object as dictionary, including relationships."""
         if visited is None:
             visited = set()
@@ -101,9 +100,9 @@ class DatabaseModel(metaclass=DeclarativeMeta):
         for relationship in inspect(self).mapper.relationships:
             value = getattr(self, relationship.key)
             if isinstance(value, list):
-                serialized_data[relationship.key] = [await item.as_dict(visited) for item in value]
+                serialized_data[relationship.key] = [item.as_dict(visited) for item in value]
             elif value:
-                serialized_data[relationship.key] = await value.as_dict(visited)
+                serialized_data[relationship.key] = value.as_dict(visited)
             else:
                 serialized_data[relationship.key] = None
 

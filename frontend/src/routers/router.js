@@ -1,8 +1,8 @@
 // router.js
 
 import SiteContainer from '../components/SiteContainer';
-import LoginPage from '../components/LoginPage';
 import {createRouter, createWebHistory} from "vue-router/dist/vue-router";
+import AuthPage from "@/components/AuthPage";
 
 const routes = [
   {
@@ -12,8 +12,8 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'LoginPage',
-    component: LoginPage,
+    name: 'AuthPage',
+    component: AuthPage,
   },
 ];
 
