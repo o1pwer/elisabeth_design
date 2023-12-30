@@ -14,10 +14,7 @@ export default {
     ClothesSet
   },
   props: {
-    items: {
-      type: Array, default:
-          () => []
-    },
+    items: Array,
   },
   methods: {
     addToCounter() {
@@ -28,13 +25,7 @@ export default {
       // Clears counter
       this.itemStyleCallCounter = 0;
     },
-    getImageLink(item) {
-      if (item.images.length > 0) {
-        return require(`${item.images[0].link}`)
-      } else {
-        return false
-      }
-    }
+
   },
   data() {
     return {

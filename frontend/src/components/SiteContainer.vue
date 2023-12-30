@@ -15,7 +15,7 @@ export default {
   components: {ClothesSetContainer, DesignerInfo},
   data() {
     return {
-      items: Array
+      items: [],
     }
   },
   mounted() {
