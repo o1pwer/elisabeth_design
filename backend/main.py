@@ -4,6 +4,7 @@ import logging
 import uvicorn as uvicorn
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
+from starlette.staticfiles import StaticFiles
 
 from database import engine
 from models.base import DatabaseModel
@@ -12,6 +13,7 @@ from routers.api import api_router
 
 app = FastAPI()
 app.include_router(api_router, prefix='/api/v1')
+app.mount("/images", StaticFiles(directory="storage/media"), name="images")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:8080"],  # Allows all origins

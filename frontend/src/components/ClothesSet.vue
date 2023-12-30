@@ -10,7 +10,7 @@ export default {
   name: 'ClothesSet',
   methods: {
     test() {
-      return require('../assets/media/photo_2023-10-08_15-44-22.jpg')
+      return require('../../../backend/storage/media/photo_2023-10-08_15-44-22.jpg')
     }
   }
 }

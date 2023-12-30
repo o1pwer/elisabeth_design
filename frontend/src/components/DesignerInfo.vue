@@ -17,7 +17,7 @@ export default {
       default: () => {
         return {
           name: 'Elizabeth Cold',
-          photo: require('../assets/media/photo.png'),
+          photo: require('../../../backend/storage/media/photo.png'),
           biography: 'Test'
         }
       }

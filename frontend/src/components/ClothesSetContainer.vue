@@ -1,7 +1,7 @@
 <template>
   <div class="clothes-set-container">
     <ClothesSet v-for="(item, index) in items" :key="index" :style="itemStyle">
-<!--      <img v-if="item.images.length > 0" :src="require(`${item.images[0].link}`)" alt="Clothes set image">-->
+      <img v-if="item.images.length > 0" :src="item.images[0].link" alt="Clothes set image">
     </ClothesSet>
   </div>
 </template>
