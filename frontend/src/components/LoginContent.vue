@@ -10,7 +10,8 @@
         <label for="password">Password:</label>
         <input type="password" id="password" v-model="loginDetails.password">
       </div>
-      <button type="submit">Login</button>
+      <button type="submit" class="login-submit-button">Login</button>
+      <div class="register-redirect">Don't have an account? <span class="register-redirect-button">Register</span></div>
     </form>
   </div>
 </template>
@@ -50,5 +51,14 @@ export default {
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.register-redirect-button {
+  @apply font-bold;
+  cursor: pointer;
+}
+
+.login-submit-button {
+  margin-bottom: 0.5rem;
 }
 </style>
