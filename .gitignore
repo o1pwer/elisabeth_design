@@ -17,3 +17,9 @@ dist/
 
 # Ignore git toolbox files
 git_toolbox_prj.xml
+
+# Ignore Pycharm files
+.idea
+
+# Ignore static files
+backend/storage/media/
